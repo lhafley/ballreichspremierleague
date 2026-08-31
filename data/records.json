@@ -1,0 +1,14 @@
+[
+  { "name": "Luke",   "avgFinish": 5,  "wins": 8,  "losses": 6,  "seasons": 1 },
+  { "name": "Brock",  "avgFinish": 6,  "wins": 68, "losses": 54, "seasons": 9 },
+  { "name": "Jake",   "avgFinish": 5,  "wins": 69, "losses": 53, "seasons": 9 },
+  { "name": "Tanner", "avgFinish": 7,  "wins": 63, "losses": 59, "seasons": 9 },
+  { "name": "Vince",  "avgFinish": 8,  "wins": 47, "losses": 75, "seasons": 9 },
+  { "name": "Tommy",  "avgFinish": 6,  "wins": 28, "losses": 28, "seasons": 4 },
+  { "name": "Jett",   "avgFinish": 7,  "wins": 55, "losses": 53, "seasons": 8 },
+  { "name": "Mike",   "avgFinish": 5,  "wins": 66, "losses": 56, "seasons": 9 },
+  { "name": "Tyler",  "avgFinish": 5,  "wins": 77, "losses": 45, "seasons": 9 },
+  { "name": "Jeff",   "avgFinish": 10, "wins": 42, "losses": 67, "seasons": 8 },
+  { "name": "Scott",  "avgFinish": 5,  "wins": 42, "losses": 41, "seasons": 6 },
+  { "name": "Austen", "avgFinish": 9,  "wins": 19, "losses": 23, "seasons": 3 }
+]
