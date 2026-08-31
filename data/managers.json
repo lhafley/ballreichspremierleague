@@ -1,14 +1,14 @@
 [
-  { "name": "Luke", "team": "Glass Cannon", "tenure": "2025–Present", "note": "Commissioner's Office", "tags": ["Rookie exec", "You"] },
-  { "name": "Austen", "team": "HEINZ Tow-Maters", "tenure": "2023–Present", "note": "" , "tags": [] },
-  { "name": "Jett", "team": "Jadolf Hurtler", "tenure": "2017–2024, 2026–Present", "note": "Returning member", "tags": [] },
-  { "name": "Scott", "team": "Galley Boys", "tenure": "2020–Present", "note": "", "tags": [] },
-  { "name": "Jeff", "team": "Brain Blast", "tenure": "2018–Present", "note": "", "tags": [] },
-  { "name": "Tyler", "team": "Sauce Boss", "tenure": "2017–Present", "note": "2020 Champion", "tags": ["Founder"] },
-  { "name": "Mike", "team": "Forbidden Weens", "tenure": "2017–Present", "note": "2× Champion (2017, 2022)", "tags": ["Founder"] },
-  { "name": "Tommy", "team": "CeeDeezNutz", "tenure": "2022–Present", "note": "", "tags": [] },
-  { "name": "Vince", "team": "Stroud Boys", "tenure": "2017–Present", "note": "", "tags": ["Founder"] },
-  { "name": "Tanner", "team": "Tiger Bloods", "tenure": "2017–Present", "note": "", "tags": ["Founder"] },
-  { "name": "Jake", "team": "Spice Lords", "tenure": "2017–Present", "note": "2× Champion (2018, 2021)", "tags": ["Founder", "Commissioner"] },
-  { "name": "Brock", "team": "Piesman Fan Club", "tenure": "2017–Present", "note": "2025 Champion", "tags": ["Founder", "Assistant Commissioner"] }
+  { "name": "Luke", "team": "Glass Cannon", "tenure": "2025–Present", "note": "Commissioner's Office", "tags": ["Rookie exec", "You"], "photo": "" },
+  { "name": "Austen", "team": "HEINZ Tow-Maters", "tenure": "2023–Present", "note": "" , "tags": [], "photo": "" },
+  { "name": "Jett", "team": "Jadolf Hurtler", "tenure": "2017–2024, 2026–Present", "note": "Returning member", "tags": [], "photo": "" },
+  { "name": "Scott", "team": "Galley Boys", "tenure": "2020–Present", "note": "", "tags": [], "photo": "" },
+  { "name": "Jeff", "team": "Brain Blast", "tenure": "2018–Present", "note": "", "tags": [], "photo": "" },
+  { "name": "Tyler", "team": "Sauce Boss", "tenure": "2017–Present", "note": "2020 Champion", "tags": ["Founder"], "photo": "" },
+  { "name": "Mike", "team": "Forbidden Weens", "tenure": "2017–Present", "note": "2× Champion (2017, 2022)", "tags": ["Founder"], "photo": "" },
+  { "name": "Tommy", "team": "CeeDeezNutz", "tenure": "2022–Present", "note": "", "tags": [], "photo": "" },
+  { "name": "Vince", "team": "Stroud Boys", "tenure": "2017–Present", "note": "", "tags": ["Founder"], "photo": "" },
+  { "name": "Tanner", "team": "Tiger Bloods", "tenure": "2017–Present", "note": "", "tags": ["Founder"], "photo": "" },
+  { "name": "Jake", "team": "Spice Lords", "tenure": "2017–Present", "note": "2× Champion (2018, 2021)", "tags": ["Founder", "Commissioner"], "photo": "" },
+  { "name": "Brock", "team": "Piesman Fan Club", "tenure": "2017–Present", "note": "2025 Champion", "tags": ["Founder", "Assistant Commissioner"], "photo": "" }
 ]

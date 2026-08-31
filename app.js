@@ -45,11 +45,28 @@ function el(tag, opts = {}, children = []) {
 }
 
 // ---- MANAGERS ---------------------------------------------------
-loadJSON("data/managers.json").then(managers => {
+function initials(name) {
+  return name.trim().split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+}
+
+function avatarNode(name, photo, size) {
+  const box = el("div", { class: "m-avatar", attrs: size ? { style: `width:${size}px;height:${size}px;` } : {} });
+  if (photo) {
+    box.appendChild(el("img", { attrs: { src: photo, alt: name } }));
+  } else {
+    box.textContent = initials(name);
+  }
+  return box;
+}
+
+let managersData = [];
+const managersReady = loadJSON("data/managers.json").then(managers => {
+  managersData = managers;
   const grid = document.getElementById("managers-grid");
   managers.forEach(m => {
     const tags = m.tags.map(t => el("span", { class: "tag", text: t }));
     grid.appendChild(el("div", { class: "manager-card" }, [
+      avatarNode(m.name, m.photo, 52),
       el("div", { class: "m-name", text: m.name }),
       el("div", { class: "m-team", text: m.team }),
       el("div", { class: "m-tenure", text: m.tenure }),
@@ -58,7 +75,8 @@ loadJSON("data/managers.json").then(managers => {
     ]));
   });
   document.querySelector('#hero-stats .hero-stat .num').textContent = managers.length;
-}).catch(err => console.error(err));
+  return managers;
+}).catch(err => { console.error(err); return []; });
 
 // ---- RECORDS ---------------------------------------------------
 let recordsData = [];
@@ -108,15 +126,37 @@ document.querySelectorAll(".sort-btn").forEach(btn => {
 });
 
 // ---- CHAMPIONSHIPS ---------------------------------------------------
-loadJSON("data/championships.json").then(list => {
-  const container = document.getElementById("trophy-case");
+const trophySVG = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M7 3h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5V3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M7 4H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M17 4h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M12 12v3" stroke="currentColor" stroke-width="1.6"/>
+  <path d="M8 20h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M9 15h6l1 5H8l1-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>`;
+
+Promise.all([loadJSON("data/championships.json"), managersReady]).then(([list, managers]) => {
+  const container = document.getElementById("banner-case");
+  const byName = Object.fromEntries(managers.map(m => [m.name.toLowerCase(), m]));
+
   list.forEach(c => {
-    container.appendChild(el("div", { class: "trophy-row" }, [
-      el("div", { class: "t-year", text: c.year }),
-      el("div", {}, [
-        el("span", { class: "t-champ", text: c.champion }),
-        !c.active ? el("span", { class: "t-flag", text: "No longer in league" }) : null
-      ])
+    const mgr = byName[c.champion.toLowerCase()];
+    const photoBox = el("div", { class: "cb-photo" });
+    if (mgr && mgr.photo) {
+      photoBox.appendChild(el("img", { attrs: { src: mgr.photo, alt: c.champion } }));
+    } else {
+      photoBox.textContent = initials(c.champion);
+    }
+
+    container.appendChild(el("div", { class: `champ-banner${c.active ? "" : " inactive"}` }, [
+      el("div", { class: "cb-year", text: c.year }),
+      photoBox,
+      el("div", { class: "cb-info" }, [
+        el("div", { class: "cb-name", text: c.champion }),
+        mgr ? el("div", { class: "cb-team", text: mgr.team }) : null,
+        !c.active ? el("div", { class: "cb-flag", text: c.note || "No longer in league" }) : null
+      ]),
+      el("div", { class: "cb-trophy", html: trophySVG })
     ]));
   });
 
