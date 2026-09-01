@@ -36,20 +36,39 @@ if (!ESPN_S2 || !ESPN_SWID) {
 const url = `https://fantasy.espn.com/apis/v3/games/ffl/seasons/${SEASON}/segments/0/leagues/${LEAGUE_ID}?view=mTeam&view=mStandings`;
 console.log(`Computed SEASON: ${SEASON}, LEAGUE_ID: ${LEAGUE_ID}`);
 
-async function main() {
+async function fetchOnce() {
   const res = await fetch(url, {
     headers: {
       Cookie: `espn_s2=${ESPN_S2}; SWID=${ESPN_SWID};`,
-      "User-Agent": "Mozilla/5.0 (compatible; BallreichsPL-sync/1.0)",
-      Accept: "application/json",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+      Accept: "application/json, text/plain, */*",
+      "Accept-Language": "en-US,en;q=0.9",
+      Referer: "https://fantasy.espn.com/",
+      Origin: "https://fantasy.espn.com",
     },
   });
-
   const rawText = await res.text();
+  return { res, rawText };
+}
+
+async function main() {
+  let res, rawText;
+  const attempts = 4;
+
+  for (let i = 1; i <= attempts; i++) {
+    ({ res, rawText } = await fetchOnce());
+    console.log(`Attempt ${i}: status ${res.status} ${res.statusText}, ${rawText.length} chars`);
+    if (rawText && rawText.trim()) break;
+    if (i < attempts) {
+      const waitMs = 1500 * i;
+      console.log(`Empty response — waiting ${waitMs}ms before retrying...`);
+      await new Promise(r => setTimeout(r, waitMs));
+    }
+  }
 
   console.log(`Request URL: ${url}`);
-  console.log(`Response status: ${res.status} ${res.statusText}`);
-  console.log(`Response length: ${rawText.length} characters`);
+  console.log(`Final response status: ${res.status} ${res.statusText}`);
+  console.log(`Final response length: ${rawText.length} characters`);
   console.log(`First 500 chars of response:\n${rawText.slice(0, 500)}`);
 
   if (!res.ok) {
@@ -57,7 +76,7 @@ async function main() {
   }
 
   if (!rawText || !rawText.trim()) {
-    throw new Error("ESPN returned an empty response body — cookies are likely expired/invalid, or the season/league ID is wrong.");
+    throw new Error("ESPN kept returning an empty response body after retries — cookies are likely expired/invalid, or GitHub Actions' IP range is being rate-limited by ESPN's bot protection.");
   }
 
   let data;
