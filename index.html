@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ballreich's Premier League</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <img src="assets/logo.png" alt="Ballreich's Premier League crest" class="crest">
+    <div class="brand-text">
+      <p class="league-name">Ballreich's Premier League</p>
+      <p class="league-sub">ESPN LEAGUE #335276 · EST. 2012</p>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="home" class="active">Home</button>
+      <button data-tab="managers">Managers</button>
+      <button data-tab="records">Records</button>
+      <button data-tab="championships">Championships</button>
+      <button data-tab="ices">Ices</button>
+      <button data-tab="golf">Golf Outing</button>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>The League<br>Hub.</h1>
+    <p class="lede">Everything that matters: who's in, who's won, who's lost, and who owes a chug. One page, twelve managers, no excuses.</p>
+    <div class="hero-stats" id="hero-stats">
+      <div class="hero-stat"><div class="num">12</div><div class="label">Managers</div></div>
+      <div class="hero-stat"><div class="num">9</div><div class="label">Seasons on record</div></div>
+      <div class="hero-stat"><div class="num">2012</div><div class="label">League founded</div></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <section class="tab-panel active" id="tab-home">
+    <div class="home-grid">
+      <div class="panel">
+        <h3>What's here</h3>
+        <p style="color:var(--ink-soft); font-size:14.5px; line-height:1.6;">
+          This is the hub for Ballreich's Premier League — manager bios, all-time records, championship history,
+          the Ices tracker, and the annual golf outing standings. Use the tabs above to get around.
+        </p>
+        <p style="color:var(--ink-soft); font-size:14.5px; line-height:1.6;">
+          The <strong>Ices</strong> tab pulls live from the league's Google Sheet, so it's always current —
+          no need to update this site when a payment gets made.
+        </p>
+      </div>
+      <div class="panel">
+        <h3>Most recent champion</h3>
+        <div id="home-latest-champ"></div>
+        <h3 style="margin-top:22px;">Last 3 seasons</h3>
+        <div id="home-mini-champs"></div>
+        <a href="#" class="link-out" data-tab-link="championships">See full trophy case →</a>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <h3>Current season standings</h3>
+      <div id="home-standings">
+        <p style="color:var(--ink-soft); font-size:13.5px; line-height:1.6;">
+          Not connected yet. Once the ESPN sync is set up (see the project README), this season's standings
+          will appear here automatically, refreshed weekly.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANAGERS -->
+  <section class="tab-panel" id="tab-managers">
+    <div class="section-head">
+      <h2>Managers</h2>
+      <p class="section-desc">Twelve teams, one league. Tenure reflects consecutive or total years active.</p>
+    </div>
+    <div class="card-grid" id="managers-grid"></div>
+  </section>
+
+  <!-- RECORDS -->
+  <section class="tab-panel" id="tab-records">
+    <div class="section-head">
+      <h2>All-Time Records</h2>
+      <p class="section-desc">Regular-season win/loss record and average finish across every season played. Click a column to sort.</p>
+    </div>
+    <div class="records-table-wrap">
+      <table class="records" id="records-table">
+        <thead>
+          <tr>
+            <th><button class="sort-btn" data-key="name">Manager</button></th>
+            <th><button class="sort-btn" data-key="avgFinish">Avg. Finish</button></th>
+            <th><button class="sort-btn" data-key="wins">Record</button></th>
+            <th><button class="sort-btn" data-key="winPct">Win %</button></th>
+            <th><button class="sort-btn" data-key="seasons">Seasons</button></th>
+          </tr>
+        </thead>
+        <tbody id="records-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CHAMPIONSHIPS -->
+  <section class="tab-panel" id="tab-championships">
+    <div class="section-head">
+      <h2>Trophy Case</h2>
+      <p class="section-desc">Every champion since the league's first ESPN season in 2017.</p>
+    </div>
+    <div class="banner-case" id="banner-case"></div>
+  </section>
+
+  <!-- ICES -->
+  <section class="tab-panel" id="tab-ices">
+    <div class="section-head">
+      <h2>Ices</h2>
+      <p class="section-desc">Start a player who drops 0 or fewer points, chug a Smirnoff Ice, send it to the group chat.</p>
+    </div>
+
+    <div class="ices-toolbar">
+      <button class="btn secondary" id="ices-refresh">Refresh data</button>
+      <span class="status-line" id="ices-status"><span class="dot"></span>Loading…</span>
+    </div>
+
+    <div id="ices-content">
+      <div class="ices-loading">Pulling the latest from the sheet…</div>
+    </div>
+
+    <div class="rule-box">
+      <strong>The rule:</strong> if a player in your starting lineup — not a defense — scores 0 points or less in a
+      given week, you chug a Smirnoff Ice and post proof to the group chat. This tracker mirrors the league's
+      <a href="https://docs.google.com/spreadsheets/d/1GgBvjiKJ7bSm-T6he38b0rG_sk8vhiAcL2UD_AuB5FA/edit?usp=sharing" target="_blank" rel="noopener">Google Sheet</a>
+      — edit the sheet and this page updates automatically.
+    </div>
+  </section>
+
+  <!-- GOLF -->
+  <section class="tab-panel" id="tab-golf">
+    <div class="section-head">
+      <h2>League Golf Outing</h2>
+      <p class="section-desc">The offseason's other tradition. Winners and losers, by year.</p>
+    </div>
+    <div id="golf-list"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Ballreich's Premier League · ESPN League #335276</span>
+    <span>Built for the group chat.</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
