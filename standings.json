@@ -1,0 +1,17 @@
+{
+  "updatedAt": "2026-09-01",
+  "teams": [
+    { "name": "Glass Cannon",        "wins": 0, "losses": 0, "ties": 0, "standing": 1 },
+    { "name": "HEINZ Tow-Maters",    "wins": 0, "losses": 0, "ties": 0, "standing": 2 },
+    { "name": "Jadolf Hurtler",      "wins": 0, "losses": 0, "ties": 0, "standing": 3 },
+    { "name": "Galley Boys",         "wins": 0, "losses": 0, "ties": 0, "standing": 4 },
+    { "name": "Brain Blast",         "wins": 0, "losses": 0, "ties": 0, "standing": 5 },
+    { "name": "Sauce Boss",          "wins": 0, "losses": 0, "ties": 0, "standing": 6 },
+    { "name": "Forbidden Weens",     "wins": 0, "losses": 0, "ties": 0, "standing": 7 },
+    { "name": "CeeDeezNutz",         "wins": 0, "losses": 0, "ties": 0, "standing": 8 },
+    { "name": "Stroud Boys",         "wins": 0, "losses": 0, "ties": 0, "standing": 9 },
+    { "name": "Tiger Bloods",        "wins": 0, "losses": 0, "ties": 0, "standing": 10 },
+    { "name": "Spice Lords",         "wins": 0, "losses": 0, "ties": 0, "standing": 11 },
+    { "name": "Piesman Fan Club",    "wins": 0, "losses": 0, "ties": 0, "standing": 12 }
+  ]
+}
