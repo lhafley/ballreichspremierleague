@@ -34,20 +34,38 @@ if (!ESPN_S2 || !ESPN_SWID) {
 }
 
 const url = `https://fantasy.espn.com/apis/v3/games/ffl/seasons/${SEASON}/segments/0/leagues/${LEAGUE_ID}?view=mTeam&view=mStandings`;
+console.log(`Computed SEASON: ${SEASON}, LEAGUE_ID: ${LEAGUE_ID}`);
 
 async function main() {
   const res = await fetch(url, {
     headers: {
       Cookie: `espn_s2=${ESPN_S2}; SWID=${ESPN_SWID};`,
       "User-Agent": "Mozilla/5.0 (compatible; BallreichsPL-sync/1.0)",
+      Accept: "application/json",
     },
   });
+
+  const rawText = await res.text();
+
+  console.log(`Request URL: ${url}`);
+  console.log(`Response status: ${res.status} ${res.statusText}`);
+  console.log(`Response length: ${rawText.length} characters`);
+  console.log(`First 500 chars of response:\n${rawText.slice(0, 500)}`);
 
   if (!res.ok) {
     throw new Error(`ESPN request failed: ${res.status} ${res.statusText}`);
   }
 
-  const data = await res.json();
+  if (!rawText || !rawText.trim()) {
+    throw new Error("ESPN returned an empty response body — cookies are likely expired/invalid, or the season/league ID is wrong.");
+  }
+
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch (e) {
+    throw new Error("ESPN response was not valid JSON — see logged response body above for what came back instead.");
+  }
 
   const teams = (data.teams || []).map(t => ({
     id: t.id,
