@@ -1,80 +1,35 @@
-const fs = require("fs");
-const path = require("path");
+name: Sync ESPN Standings
 
-const LEAGUE_ID = 335276;
-const SEASON = new Date().getMonth() >= 6 // rough heuristic: Aug–Dec = current year season
-  ? new Date().getFullYear()
-  : new Date().getFullYear() - 1;
+on:
+  schedule:
+    # Every Tuesday at 09:00 UTC (after MNF settles) during football season.
+    # Adjust as you like — cron uses UTC.
+    - cron: "0 9 * * 2"
+  workflow_dispatch: {} # lets you trigger it manually from the Actions tab
 
-const ESPN_S2 = process.env.ESPN_S2;
-const ESPN_SWID = process.env.ESPN_SWID;
+permissions:
+  contents: write
 
-if (!ESPN_S2 || !ESPN_SWID) {
-  console.error("Missing ESPN_S2 or ESPN_SWID environment variables. Set them as GitHub Actions secrets.");
-  process.exit(1);
-}
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-const url = `https://fantasy.espn.com/apis/v3/games/ffl/seasons/${SEASON}/segments/0/leagues/${LEAGUE_ID}?view=mTeam&view=mStandings`;
-console.log(`Computed SEASON: ${SEASON}, LEAGUE_ID: ${LEAGUE_ID}`);
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-async function main() {
-  const res = await fetch(url, {
-    headers: {
-      Cookie: `espn_s2=${ESPN_S2}; SWID=${ESPN_SWID};`,
-      "User-Agent": "Mozilla/5.0 (compatible; BallreichsPL-sync/1.0)",
-      Accept: "application/json",
-    },
-  });
+      - name: Fetch ESPN standings
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+        run: node scripts/espn-sync.js
 
-  const rawText = await res.text();
-
-  console.log(`Request URL: ${url}`);
-  console.log(`Response status: ${res.status} ${res.statusText}`);
-  console.log(`Response length: ${rawText.length} characters`);
-  console.log(`First 500 chars of response:\n${rawText.slice(0, 500)}`);
-
-  if (!res.ok) {
-    throw new Error(`ESPN request failed: ${res.status} ${res.statusText}`);
-  }
-
-  if (!rawText || !rawText.trim()) {
-    throw new Error("ESPN returned an empty response body — cookies are likely expired/invalid, or the season/league ID is wrong.");
-  }
-
-  let data;
-  try {
-    data = JSON.parse(rawText);
-  } catch (e) {
-    throw new Error("ESPN response was not valid JSON — see logged response body above for what came back instead.");
-  }
-
-  const teams = (data.teams || []).map(t => ({
-    id: t.id,
-    name: `${t.location || ""} ${t.nickname || ""}`.trim() || t.name || `Team ${t.id}`,
-    abbrev: t.abbrev,
-    wins: t.record?.overall?.wins ?? 0,
-    losses: t.record?.overall?.losses ?? 0,
-    ties: t.record?.overall?.ties ?? 0,
-    pointsFor: t.record?.overall?.pointsFor ?? 0,
-    pointsAgainst: t.record?.overall?.pointsAgainst ?? 0,
-    standing: t.playoffSeed ?? null,
-  }));
-
-  teams.sort((a, b) => (a.standing || 99) - (b.standing || 99));
-
-  const output = {
-    season: SEASON,
-    leagueId: LEAGUE_ID,
-    updatedAt: new Date().toISOString(),
-    teams,
-  };
-
-  const outPath = path.join(__dirname, "..", "data", "standings.json");
-  fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
-  console.log(`Wrote ${teams.length} teams to ${outPath}`);
-}
-
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+      - name: Commit updated data
+        run: |
+          git config user.name "espn-sync-bot"
+          git config user.email "actions@github.com"
+          git add data/standings.json
+          git diff --quiet --cached || git commit -m "Sync ESPN standings"
+          git push
