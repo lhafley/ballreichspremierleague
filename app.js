@@ -323,11 +323,12 @@ if (page === "home") {
       if (glance) {
         const seasons = Math.max(...records.map(r => r.seasons), champs.length);
         const stats = [
-          { num: managers.length || 12, label: "Teams" },
-          { num: seasons, label: "Seasons Tracked" },
-          { num: champs.length, label: "Champions Crowned" },
-          { num: 2012, label: "League Founded" }
-        ];
+  { num: managers.length || 12, label: "Teams" },
+  { num: seasons, label: "Seasons Tracked" },
+  { num: champs.length, label: "Champions Crowned" },
+  { num: 2012, label: "League Founded" },
+  { num: 47, label: "2025 Total Ices" }
+];
         stats.forEach(s => {
           glance.appendChild(el("div", { class: "glance-item" }, [
             el("div", { class: "g-num", text: s.num }),
